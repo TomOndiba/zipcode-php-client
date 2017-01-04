@@ -1,0 +1,29 @@
+{
+    "name": "codenexus/zipcode",
+    "description": "Zip Code API",
+    "keywords": ["php", "codenexus", "laravel", "zipcode"],
+    "license": "MIT",
+    "authors": [
+      {
+        "name": "CodeNexus LLC",
+        "email": "help@codenexus.org",
+        "homepage": "https://codenexus.org"
+      }
+    ],
+    "require": {
+        "illuminate/support": "^5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Codenexus\\Zipcode\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Codenexus\\Zipcode\\Tests\\": "tests/"
+        }
+    }
+}
