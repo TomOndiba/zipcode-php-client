@@ -24,7 +24,7 @@ class ZipcodeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('zipcode', function ($app) {
+        $this->app->singleton('zipcode', function () {
             return new Zipcode;
         });
     }
