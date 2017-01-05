@@ -8,39 +8,62 @@ class Zipcode
 {
     protected $client;
 
+    protected $key;
+
     public function __construct()
     {
         $this->client = $this->createHttpClient();
+        $this->key = env('ZIPCODE_APP_KEY');
     }
 
-    public function distance($zip1, $zip2, $format = 'json', $units = 'mile')
+    public function zipCodeDistance($zip1, $zip2, $format = 'json', $units = 'mile')
     {
-        //
+        $path = "$this->key/distance.$format/$zip1/$zip2/$units";
+        $response = $this->sendRequest($path);
+
+        return $response->getBody();
     }
 
-    public function find_zip_codes_by_radius($zip, $distance, $format = 'json', $units = 'mile')
+    public function findZipCodesByRadius($zip, $distance = 10, $format = 'json', $units = 'mile')
     {
-        //
+        $path = "$this->key/radius.$format/$zip/$distance/$units";
+        $response = $this->sendRequest($path);
+
+        return $response->getBody();
     }
 
-    public function find_close_zip_codes(array $zip, $distance = 10, $format = 'json', $units = 'mile')
+    public function findCloseZipCodes(array $zipcodes, $distance = 10, $format = 'json', $units = 'mile')
     {
-        //
+        $zips = implode(",", $zipcodes);
+        $path = "$this->key/match-close.$format/$zips/$distance/$units";
+        $response = $this->sendRequest($path);
+
+        return $response->getBody();
     }
 
-    public function zip_code_to_location($zip, $format = 'json', $units = 'degrees')
+    public function zipCodeToLocation($zip, $format = 'json', $units = 'degrees')
     {
-        //
+        $path = "$this->key/info.$format/$zip/$units";
+        $response = $this->sendRequest($path);
+
+        return $response->getBody();
     }
 
-    public function zip_codes_to_location($zip1, $zip2, $format = 'json', $units = 'degrees')
+    public function zipCodesToLocation(array $zipcodes, $format = 'json', $units = 'degrees')
     {
-        //
+        $zips = implode(",", $zipcodes);
+        $path = "$this->key/multi-info.$format/$zips/$distance/$units";
+        $response = $this->sendRequest($path);
+
+        return $response->getBody();
     }
 
-    public function location_to_zip_codes($city, $state, $format = 'json')
+    public function locationToZipCodes($city, $state, $format = 'json')
     {
+        $path = "$this->key/city-zips.$format/$city/$state";
+        $response = $this->sendRequest($path);
 
+        return $response->getBody();
     }
 
     protected function createHttpClient()
@@ -48,6 +71,13 @@ class Zipcode
         $client = new Client(['base_uri' => 'https://www.zipcodeapi.com/rest/']);
 
         return $client;
+    }
+
+    protected function sendRequest($path)
+    {
+        $response = $this->client->request('GET', $path);
+
+        return $response;
     }
 
 }
